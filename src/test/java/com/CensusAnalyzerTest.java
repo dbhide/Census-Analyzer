@@ -28,5 +28,4 @@ public class CensusAnalyzerTest {
             Assert.assertEquals(CensusAnalyserException.ExceptionType.CENSUS_FILE_PROBLEM,e.type);
         }
     }
-
 }
