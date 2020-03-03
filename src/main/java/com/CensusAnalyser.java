@@ -1,7 +1,5 @@
 package com;
 
-import com.opencsv.bean.CsvToBean;
-import com.opencsv.bean.CsvToBeanBuilder;
 import java.io.IOException;
 import java.io.Reader;
 import java.nio.file.Files;
@@ -12,10 +10,8 @@ import java.util.stream.StreamSupport;
 public class CensusAnalyser {
     public int loadIndiaCensusData(String csvFilePath) throws CensusAnalyserException {
         try ( Reader reader = Files.newBufferedReader(Paths.get(csvFilePath));){
-            Iterator<IndiaCensusCSV> censusCSVIterator = this.getCSVIterator(reader, IndiaCensusCSV.class);
-//            Iterable<IndiaCensusCSV> csvIterable = () -> stateCSVIterator;
-//            int namOfEntries = (int) StreamSupport.stream(csvIterable.spliterator(), false).count();
-//            return namOfEntries;
+
+            Iterator<IndiaCensusCSV> censusCSVIterator = new OpenCSVBuilder().getCSVIterator(reader, IndiaCensusCSV.class);
             return getCount(censusCSVIterator);
         } catch (IOException e) {
             throw new CensusAnalyserException(e.getMessage(),
@@ -29,24 +25,15 @@ public class CensusAnalyser {
         }
     }
 
-    private <E> Iterator<E> getCSVIterator(Reader reader, Class csvClass) {
-        CsvToBeanBuilder<E> csvToBeanBuilder = new CsvToBeanBuilder<>(reader);
-        csvToBeanBuilder.withType(csvClass);
-        csvToBeanBuilder.withIgnoreLeadingWhiteSpace(true);
-        CsvToBean<E> csvToBean = csvToBeanBuilder.build();
-        Iterator<E> stateCSVIterator = csvToBean.iterator();
-        return stateCSVIterator;
-    }
-
     private <E> int getCount(Iterator<E> iterator) {
         Iterable<E> csvIterable = () -> iterator;
-        int namOfEntries = (int) StreamSupport.stream(csvIterable.spliterator(), false).count();
-        return namOfEntries;
+        int numOfEntries = (int) StreamSupport.stream(csvIterable.spliterator(), false).count();
+        return numOfEntries;
     }
 
     public int loadIndiaStateCode(String csvFilePath) throws CensusAnalyserException {
         try ( Reader reader = Files.newBufferedReader(Paths.get(csvFilePath));){
-            Iterator<IndiaStateCodeCSV> stateCSVIterator = this.getCSVIterator(reader, IndiaStateCodeCSV.class);
+            Iterator<IndiaStateCodeCSV> stateCSVIterator = new OpenCSVBuilder().getCSVIterator(reader, IndiaStateCodeCSV.class);
             return getCount(stateCSVIterator);
         }
         catch (IOException e) {
