@@ -15,7 +15,6 @@ public class CensusDTO {
         population = indiaCensusCSV.population;
     }
 
-
     public CensusDTO(USCensusCSV usCensusCSV) {
         stateId = usCensusCSV.stateId;
         state = usCensusCSV.state;
