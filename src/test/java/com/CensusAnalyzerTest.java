@@ -11,6 +11,7 @@ public class CensusAnalyzerTest {
     private static final String INDIA_STATE_CSV = "./src/test/resources/IndiaStateCode.csv";
     private static final String WRONG_FILE_TYPE = "./src/test/resources/IndiaStateCensusData.txt";
     private static final String DELIMITER_PROBLEM_FILE = "./src/test/resources/DelimiterFile.csv";
+    private static final String US_CENSUS_CSV_FILE_PATH = "./src/test/resources/USCensusData (1).csv";
 
     @Test
     public void givenIndianCensusCSVFileReturnsCorrectRecords() {
@@ -75,6 +76,17 @@ public class CensusAnalyzerTest {
             IndiaCensusCSV[] censusCSV= new Gson().fromJson(sortedCensusData, IndiaCensusCSV[].class);
             Assert.assertEquals("Andhra Pradesh", censusCSV[0].state);
         } catch (CensusAnalyserException e) {
+
+        }
+    }
+
+    @Test
+    public void givenUSCensusData_ShouldReturnCorrectRecord() {
+        try {
+            CensusAnalyser censusAnalyser = new CensusAnalyser();
+            int censusDataCount = censusAnalyser.loadUSCensusData(US_CENSUS_CSV_FILE_PATH);
+            Assert.assertEquals(51, censusDataCount);
+        }catch (CensusAnalyserException e){
 
         }
     }
