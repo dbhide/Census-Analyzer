@@ -1,33 +1,20 @@
 package com;
 
 import com.google.gson.Gson;
-import java.io.IOException;
-import java.io.Reader;
-import java.nio.file.Files;
-import java.nio.file.Paths;
 import java.util.*;
 import java.util.stream.Collectors;
-import java.util.stream.StreamSupport;
+
 
 public class CensusAnalyser {
+    public enum Country {INDIA, US};
     List<CensusDTO> censusList = null;
     Map<String, CensusDTO> censusMap = null;
 
-    public CensusAnalyser() {
-        censusList = new ArrayList<CensusDTO>();
-        censusMap = new HashMap<String, CensusDTO>();
-    }
+    public CensusAnalyser() { }
 
-    public int loadIndiaCensusData(String... csvFilePath) throws CensusAnalyserException {
+    public int loadCensusData(Country country, String... csvFilePath) throws CensusAnalyserException {
 
-        censusMap = new CensusLoader().loadCensusData(IndiaCensusCSV.class, csvFilePath);
-        censusList = censusMap.values().stream().collect(Collectors.toList());
-        return censusMap.size();
-    }
-
-    public int loadUSCensusData(String...  csvFilePath) throws CensusAnalyserException {
-
-        censusMap = new CensusLoader().loadCensusData(USCensusCSV.class, csvFilePath);
+        censusMap = new CensusLoader().loadCensusData(country, csvFilePath);
         censusList = censusMap.values().stream().collect(Collectors.toList());
         return censusMap.size();
     }
