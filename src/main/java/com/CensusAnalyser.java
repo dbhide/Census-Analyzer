@@ -4,9 +4,9 @@ import com.google.gson.Gson;
 import java.util.*;
 import java.util.stream.Collectors;
 
-
 public class CensusAnalyser {
     public enum Country {INDIA, US};
+
     List<CensusDTO> censusList = null;
     Map<String, CensusDTO> censusMap = null;
 
@@ -14,7 +14,7 @@ public class CensusAnalyser {
 
     public int loadCensusData(Country country, String... csvFilePath) throws CensusAnalyserException {
 
-        censusMap = new CensusLoader().loadCensusData(country, csvFilePath);
+        censusMap = CensusAdapterFactory.getCensusAdapter(country, csvFilePath);
         censusList = censusMap.values().stream().collect(Collectors.toList());
         return censusMap.size();
     }
