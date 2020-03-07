@@ -9,15 +9,16 @@ import java.util.Map;
 import java.util.stream.StreamSupport;
 
 public class IndiaCensusAdapter extends CensusAdapter {
-
+    public Map<String, CensusDTO> censusMap;
     @Override
     public Map<String, CensusDTO> loadCensusData(String... csvFilePath) throws CensusAnalyserException {
-        Map<String, CensusDTO> censusMap = super.loadCensusData(IndiaCensusCSV.class, csvFilePath[0]);
+        censusMap = super.loadCensusData(IndiaCensusCSV.class, csvFilePath[0]);
+        this.loadIndiaStateCode(csvFilePath[1]);
         return censusMap;
     }
 
 
-    private int loadIndiaStateCode(Map<String, CensusDTO> censusMap, String csvFilePath) throws CensusAnalyserException {
+    public int loadIndiaStateCode(String csvFilePath) throws CensusAnalyserException {
         try (Reader reader = Files.newBufferedReader(Paths.get(csvFilePath));) {
             ICSVBuilder csvBuilder = CSVBuilderFactory.createCSVBuilder();
             Iterator<IndiaStateCodeCSV> stateCSVIterator = csvBuilder.getCSVIterator(reader, IndiaStateCodeCSV.class);

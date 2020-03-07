@@ -17,7 +17,7 @@ public abstract class CensusAdapter {
         Map<String, CensusDTO> censusMap = new HashMap<>();
         try (Reader reader = Files.newBufferedReader(Paths.get(csvFilePath));) {
             ICSVBuilder csvBuilder = CSVBuilderFactory.createCSVBuilder();
-            Iterator<E> csvIterator = csvBuilder.getCSVIterator(reader, IndiaCensusCSV.class);
+            Iterator<E> csvIterator = csvBuilder.getCSVIterator(reader, censusCSVClass);
             Iterable<E> csvIterable = () -> csvIterator;
             if (censusCSVClass.getName().equals("com.IndiaCensusCSV")) {
                 StreamSupport.stream(csvIterable.spliterator(), false)
@@ -32,9 +32,13 @@ public abstract class CensusAdapter {
         } catch (IOException e) {
             throw new CensusAnalyserException(e.getMessage(),
                     CensusAnalyserException.ExceptionType.CENSUS_FILE_PROBLEM);
-        } catch (RuntimeException e) {
+        }catch (CSVBuilderException e) {
+            throw new CSVBuilderException(CSVBuilderException.ExceptionType.UNABLE_TO_PARSE);
+        }
+        catch (RuntimeException e) {
             throw new CensusAnalyserException(e.getMessage(),
                     CensusAnalyserException.ExceptionType.DELIMITER_PROBLEM);
         }
+        }
     }
-}
+

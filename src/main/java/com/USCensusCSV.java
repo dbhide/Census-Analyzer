@@ -3,7 +3,7 @@ package com;
 import com.opencsv.bean.CsvBindByName;
 
 public class USCensusCSV {
-    @CsvBindByName(column = "StateId" , required = true)
+    @CsvBindByName(column = "State Id" , required = true)
     public String stateId;
 
     @CsvBindByName(column = "State", required = true)

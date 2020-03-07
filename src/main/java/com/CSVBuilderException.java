@@ -11,8 +11,7 @@ public class CSVBuilderException extends RuntimeException {
         this.type = type;
     }
 
-    public CSVBuilderException(String message, Throwable cause, ExceptionType type) {
-        super(message, cause);
+    public CSVBuilderException(ExceptionType type) {
         this.type = type;
     }
 }
